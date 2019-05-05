@@ -15,10 +15,10 @@ Repositório do projeto da disciplina de RSI + PSD
 * [x] Gerar Table 2 do artigo
 * [x] Gerar arquivo .csv respectivo à Figure 01 do artigo
 * [x] Gerar arquivo .csv respectivo à Figure 02 do artigo
-* [] Gerar arquivo .csv respectivo à Figure 03 a do artigo
-* [] Gerar arquivo .csv respectivo à Figure 03 b do artigo
-* [] Implementar algoritmo Adamic-Adar
-* [] Gerar Table 3
-* [] Gerar Table 4
-* [] Gerar arquivo .csv respectivo à Figure 05 a do artigo
-* [] Gerar arquivo .csv respectivo à Figure 06 a do artigo
+* [ ] Gerar arquivo .csv respectivo à Figure 03 a do artigo
+* [ ] Gerar arquivo .csv respectivo à Figure 03 b do artigo
+* [ ] Implementar algoritmo Adamic-Adar
+* [ ] Gerar Table 3
+* [ ] Gerar Table 4
+* [ ] Gerar arquivo .csv respectivo à Figure 05 a do artigo
+* [ ] Gerar arquivo .csv respectivo à Figure 06 a do artigo
