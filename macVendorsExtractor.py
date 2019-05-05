@@ -7,4 +7,5 @@ def getMacVendors():
         info = macVendor.split('\t')
         vendors[info[0]] = info[1].replace('\n', '')
 
+    arq.close()
     return vendors

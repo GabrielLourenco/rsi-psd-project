@@ -1,5 +1,6 @@
 from scapy.all import *
 from macVendorsExtractor import getMacVendors
+from csvGenerator import graph1and2
 
 devices = {}
 ssids = []
@@ -86,6 +87,8 @@ verifyPCAP(rdpcap(pcapListFileNames[0]))
 #     verifyPCAP(data)
 
 countPNLs()
+
+graph1and2(devices)
 
 # visualizeData(20)
 
