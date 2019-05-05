@@ -51,7 +51,7 @@ def verifyPCAP(pcap):
                 directPR += 1
 
                 if ssid not in ssids:
-                    ssids.append(ssids)
+                    ssids.append(ssid)
 
                 if ssid not in devices[mac]['pnl']:
                     devices[mac]['pnl'].append(ssid)
