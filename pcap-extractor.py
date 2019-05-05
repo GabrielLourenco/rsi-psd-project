@@ -64,11 +64,11 @@ def countPNLs():
             PNLCounter += 1
 
 
-def visualizeData():
+def visualizeData(maxSize):
     global devices
     c = 0
     for mac, info in devices.iteritems():
-        if c < 10:
+        if c < maxSize:
             print "MAC: %s\nPNL: %s\nVendor: %s\n\n" %(mac, info['pnl'], info['vendor'])
         else:
             break
@@ -87,7 +87,7 @@ verifyPCAP(rdpcap(pcapListFileNames[0]))
 
 countPNLs()
 
-# visualizeData()
+# visualizeData(20)
 
 print "Probe requests: %d" % PRCounter
 print "Direct probe requests: %d" % directPR
