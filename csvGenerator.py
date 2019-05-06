@@ -25,3 +25,21 @@ def graph1and2(devices):
     
     file.close()
     print '\nFigure1 and Figure2 CSV generated\n'
+
+def graph3(devices):
+    data = {}
+    for mac, info in devices.iteritems():
+        for ssid in info['pnl']:
+            if ssid not in data:
+                data[ssid] = 1
+            else:
+                data[ssid] += 1
+    
+    file = open('figure3.csv', 'w')
+    file.write('ssid;N devices\n')
+    
+    for ssid, qtde in data.iteritems():
+        file.write('%s;%d\n' % (ssid, qtde))
+    
+    file.close()
+    print '\nFigure3 CSV generated\n'
