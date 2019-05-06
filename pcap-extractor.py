@@ -8,6 +8,7 @@ PRCounter = 0
 PNLCounter = 0
 directPR = 0
 broadcastPR = 0
+nullableSSID = 0
 macVendorsDict = getMacVendors()
 
 pcapListFileNames = [
@@ -16,8 +17,9 @@ pcapListFileNames = [
     'probes-2013-02-17.pcap3',
     'probes-2013-02-17.pcap4',
     'probes-2013-04-29.pcap1',
-    'probes-2013-04-29.pcap2',
-    'probes-2013-04-29.pcap3',
+    'probes-2013-04-30.pcap1',
+    'probes-2013-04-30.pcap2',
+    'probes-2013-04-30.pcap3',
     'probes-2013-05-03.pcap1',
     'probes-2013-05-03.pcap2',
     'probes-2013-05-03.pcap3',
@@ -25,7 +27,7 @@ pcapListFileNames = [
 
 
 def verifyPCAP(pcap):
-    global devices, PRCounter, directPR, broadcastPR, ssids, macVendorsDict
+    global devices, PRCounter, directPR, broadcastPR, ssids, nullableSSID, macVendorsDict
     for pkt in pcap:
         PRCounter += 1
         if pkt.haslayer(Dot11):
@@ -44,7 +46,11 @@ def verifyPCAP(pcap):
             if 'pnl' not in devices[mac]:
                 devices[mac]['pnl'] = []
 
-            ssid = pkt.info
+            try:
+                ssid = pkt.info
+            except:
+                ssid = ''
+                nullableSSID += 1
 
             if ssid == '':
                 broadcastPR += 1
@@ -83,8 +89,11 @@ verifyPCAP(rdpcap(pcapListFileNames[0]))
 # MASS SCRIPT #
 # to test, comment SINGLE SCRIPT
 # for pcap in pcapListFileNames:
+#     print 'reading %s' % pcap
 #     data = rdpcap(pcap)
+#     print '%s read. Starting verification' % pcap
 #     verifyPCAP(data)
+#     print '%s verification finished sucessfully' % pcap
 
 countPNLs()
 
@@ -97,4 +106,5 @@ print "Direct probe requests: %d" % directPR
 print "Broadcast probe requests: %d" % broadcastPR
 print "Device count: %d" % len(devices.keys())
 print "SSIDs count: %d" % len(ssids)
+print "Nullable SSIDs count: %d" % nullableSSID
 print "PNL count: %d" % PNLCounter
