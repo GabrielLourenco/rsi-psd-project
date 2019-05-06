@@ -86,20 +86,20 @@ def visualizeData(maxSize):
 
 # SINGLE SCRIPT #
 # to test, comment MASS SCRIPT
-# verifyPCAP(rdpcap(pcapListFileNames[0]))
+verifyPCAP(rdpcap(pcapListFileNames[0]))
 
 # MASS SCRIPT #
 # to test, comment SINGLE SCRIPT
-for pcap in pcapListFileNames:
-    print 'reading %s' % pcap
-    data = rdpcap(pcap)
-    print '%s read. Starting verification' % pcap
-    verifyPCAP(data)
-    print '%s verification finished sucessfully' % pcap
+# for pcap in pcapListFileNames:
+#     print 'reading %s' % pcap
+#     data = rdpcap(pcap)
+#     print '%s read. Starting verification' % pcap
+#     verifyPCAP(data)
+#     print '%s verification finished sucessfully' % pcap
 
 countPNLs()
 
-# graph1and2(devices)
+graph1and2(devices)
 
 graph3(devices)
 
