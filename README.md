@@ -4,6 +4,7 @@ Repositório do projeto da disciplina de RSI + PSD
 ## Como usar
 - Baixe e instale o Python 2.7 e o gerenciador de pacotes pip
 - Instale a lib necessária `pip install scapy` ou `C:/Python27/python.exe -m pip install -U "scapy" --user`
+- Instale a lib networkx 'pip install networkx' para o algoritmo de análise
 - Baixe os arquivos pcap do nosso tema *Train Station* [aqui](https://drive.google.com/file/d/1YdBczL5VtOLT5C1T429q6Ovu1qHvprgh/view)
 - Extraia os arquivos na raiz deste repositório
 - Abra e execute o arquivo `pcap-extractor.py`
@@ -17,7 +18,7 @@ Repositório do projeto da disciplina de RSI + PSD
 * [x] Gerar arquivo .csv respectivo à Figure 02 do artigo
 * [ ] Gerar arquivo .csv respectivo à Figure 03 a do artigo
 * [ ] Gerar arquivo .csv respectivo à Figure 03 b do artigo
-* [ ] Implementar algoritmo Adamic-Adar
+* [x] Implementar algoritmo Adamic-Adar
 * [ ] Gerar Table 3
 * [ ] Gerar Table 4
 * [ ] Gerar arquivo .csv respectivo à Figure 05 a do artigo

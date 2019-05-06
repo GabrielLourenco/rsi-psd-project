@@ -1,6 +1,7 @@
 from scapy.all import *
 from macVendorsExtractor import getMacVendors
 from csvGenerator import graph1and2
+from academicAdar import *
 
 devices = {}
 ssids = []
@@ -78,7 +79,7 @@ def visualizeData(maxSize):
 
 # SINGLE SCRIPT #
 # to test, comment MASS SCRIPT
-verifyPCAP(rdpcap(pcapListFileNames[0]))
+verifyPCAP(rdpcap('TrainStation/'+pcapListFileNames[0]))
 
 # MASS SCRIPT #
 # to test, comment SINGLE SCRIPT
@@ -90,7 +91,7 @@ countPNLs()
 
 graph1and2(devices)
 
-# visualizeData(20)
+#visualizeData(2000)
 
 print "Probe requests: %d" % PRCounter
 print "Direct probe requests: %d" % directPR
@@ -98,3 +99,8 @@ print "Broadcast probe requests: %d" % broadcastPR
 print "Device count: %d" % len(devices.keys())
 print "SSIDs count: %d" % len(ssids)
 print "PNL count: %d" % PNLCounter
+
+grafo = criaGrafo(devices)
+runTeste(grafo)
+
+
