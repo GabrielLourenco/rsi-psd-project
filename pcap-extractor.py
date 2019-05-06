@@ -1,7 +1,9 @@
 from scapy.all import *
 from macVendorsExtractor import getMacVendors
 from csvGenerator import graph1and2
+import time
 
+seconds = time.time()
 devices = {}
 ssids = []
 PRCounter = 0
@@ -108,3 +110,5 @@ print "Device count: %d" % len(devices.keys())
 print "SSIDs count: %d" % len(ssids)
 print "Nullable SSIDs count: %d" % nullableSSID
 print "PNL count: %d" % PNLCounter
+
+print "Approximate Runtime: %d minutes" % ((time.time() - seconds) // 60)
