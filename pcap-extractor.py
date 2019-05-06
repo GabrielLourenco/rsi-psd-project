@@ -86,7 +86,7 @@ def visualizeData(maxSize):
 
 # SINGLE SCRIPT #
 # to test, comment MASS SCRIPT
-verifyPCAP(rdpcap('TrainStation/'+pcapListFileNames[0]))
+verifyPCAP(rdpcap(pcapListFileNames[0]))
 
 # MASS SCRIPT #
 # to test, comment SINGLE SCRIPT
@@ -111,8 +111,9 @@ print "SSIDs count: %d" % len(ssids)
 print "Nullable SSIDs count: %d" % nullableSSID
 print "PNL count: %d" % PNLCounter
 
-grafo = criaGrafo(devices)
-runTeste(grafo)
-
+# Adamic-Adar
+# from academicAdar import criaGrafo, runTeste
+# grafo = criaGrafo(devices)
+# runTeste(grafo)
 
 print "Approximate Runtime: %d minutes" % ((time.time() - seconds) // 60)
