@@ -33,23 +33,23 @@ def verifyPCAP(pcap):
     for pkt in pcap:
         PRCounter += 1
         if pkt.haslayer(Dot11):
+            print(pkt.addr4)
             mac = pkt.addr2
             if mac not in devices:
                 devices[mac] = {}
-            
+
             macVendorAddress = mac.replace(':', '')[:6].upper()
 
-            if (macVendorsDict.has_key(macVendorAddress)):
+            if (macVendorsDict.get(macVendorAddress)):
                 devices[mac]['vendor'] = macVendorsDict[macVendorAddress]
             else:
                 devices[mac]['vendor'] = 'N/E'
-
 
             if 'pnl' not in devices[mac]:
                 devices[mac]['pnl'] = []
 
             try:
-                ssid = pkt.info
+                ssid = pkt.info.decode("utf-8")
             except:
                 ssid = ''
                 nullableSSID += 1
@@ -74,11 +74,13 @@ def countPNLs():
 
 
 def visualizeData(maxSize):
+    # não funcional
     global devices
     c = 0
-    for mac, info in devices.iteritems():
+    for mac, info in devices.items():
+        print(mac, info)
         if c < maxSize:
-            print "MAC: %s\nPNL: %s\nVendor: %s\n\n" %(mac, info['pnl'], info['vendor'])
+            print ("MAC: %s\nPNL: %s\nVendor: %s\n\n") % (mac, info['pnl'], info['vendor'])
         else:
             break
         c += 1
@@ -103,19 +105,19 @@ graph1and2(devices)
 
 graph3(devices)
 
-#visualizeData(2000)
+# visualizeData(10)
 
-print "Probe requests: %d" % PRCounter
-print "Direct probe requests: %d" % directPR
-print "Broadcast probe requests: %d" % broadcastPR
-print "Device count: %d" % len(devices.keys())
-print "SSIDs count: %d" % len(ssids)
-print "Nullable SSIDs count: %d" % nullableSSID
-print "PNL count: %d" % PNLCounter
+print ("Probe requests: %d" % PRCounter)
+print ("Direct probe requests: %d" % directPR)
+print ("Broadcast probe requests: %d" % broadcastPR)
+print ("Device count: %d" % len(devices.keys()))
+print ("SSIDs count: %d" % len(ssids))
+print ("Nullable SSIDs count: %d" % nullableSSID)
+print ("PNL count: %d" % PNLCounter)
 
 # Adamic-Adar
 # from academicAdar import criaGrafo, runTeste
 # grafo = criaGrafo(devices)
 # runTeste(grafo)
 
-print "Approximate Runtime: %d minutes" % ((time.time() - seconds) // 60)
+# print ("Approximate Runtime: %f minutes") % ((time.time() - seconds) // 60)
