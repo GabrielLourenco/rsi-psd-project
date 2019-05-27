@@ -1,6 +1,7 @@
 from scapy.all import *
 from macVendorsExtractor import getMacVendors
 from csvGenerator import graph1and2, graph3
+from kafkaProducer import sendToSpark
 import time
 
 seconds = time.time()
@@ -26,44 +27,58 @@ pcapListFileNames = [
     'probes-2013-05-03.pcap2',
     'probes-2013-05-03.pcap3',
 ]
-
+print('reading pcap')
 
 def verifyPCAP(pcap):
     global devices, PRCounter, directPR, broadcastPR, ssids, nullableSSID, macVendorsDict
+    print('starting transmission')
     for pkt in pcap:
         PRCounter += 1
         if pkt.haslayer(Dot11):
             timestamp = pkt.time
+            if current - timestamp :
             mac = pkt.addr2
-            if mac not in devices:
-                devices[mac] = {}
-
-            macVendorAddress = mac.replace(':', '')[:6].upper()
-
-            if (macVendorsDict.get(macVendorAddress)):
-                devices[mac]['vendor'] = macVendorsDict[macVendorAddress]
-            else:
-                devices[mac]['vendor'] = 'N/E'
-
-            if 'pnl' not in devices[mac]:
-                devices[mac]['pnl'] = []
-
             try:
                 ssid = pkt.info.decode("utf-8")
+                if ssid == '':
+                    ssid = 'BROADCAST'
             except:
-                ssid = ''
-                nullableSSID += 1
+                ssid = 'NULL'
 
-            if ssid == '':
-                broadcastPR += 1
-            else:
-                directPR += 1
+            macVendorAddress = mac.replace(':', '')[:6].upper()
+            vendor = macVendorsDict[macVendorAddress]
 
-                if ssid not in ssids:
-                    ssids.append(ssid)
+            sendToSpark(vendor, timestamp, ssid)
+            time.sleep()
+            # if mac not in devices:
+            #     devices[mac] = {}
 
-                if ssid not in devices[mac]['pnl']:
-                    devices[mac]['pnl'].append(ssid)
+            # macVendorAddress = mac.replace(':', '')[:6].upper()
+
+            # if (macVendorsDict.get(macVendorAddress)):
+            #     devices[mac]['vendor'] = macVendorsDict[macVendorAddress]
+            # else:
+            #     devices[mac]['vendor'] = 'N/E'
+
+            # if 'pnl' not in devices[mac]:
+            #     devices[mac]['pnl'] = []
+
+            # try:
+            #     ssid = pkt.info.decode("utf-8")
+            # except:
+            #     ssid = ''
+            #     nullableSSID += 1
+
+            # if ssid == '':
+            #     broadcastPR += 1
+            # else:
+            #     directPR += 1
+
+            #     if ssid not in ssids:
+            #         ssids.append(ssid)
+
+            #     if ssid not in devices[mac]['pnl']:
+            #         devices[mac]['pnl'].append(ssid)
 
 
 def countPNLs():
@@ -98,21 +113,21 @@ verifyPCAP(rdpcap(pcapListFileNames[0]))
 #     verifyPCAP(data)
 #     print '%s verification finished sucessfully' % pcap
 
-countPNLs()
+# countPNLs()
 
-graph1and2(devices)
+# graph1and2(devices)
 
-graph3(devices)
+# graph3(devices)
 
 # visualizeData(10)
 
-print ("Probe requests: %d" % PRCounter)
-print ("Direct probe requests: %d" % directPR)
-print ("Broadcast probe requests: %d" % broadcastPR)
-print ("Device count: %d" % len(devices.keys()))
-print ("SSIDs count: %d" % len(ssids))
-print ("Nullable SSIDs count: %d" % nullableSSID)
-print ("PNL count: %d" % PNLCounter)
+# print ("Probe requests: %d" % PRCounter)
+# print ("Direct probe requests: %d" % directPR)
+# print ("Broadcast probe requests: %d" % broadcastPR)
+# print ("Device count: %d" % len(devices.keys()))
+# print ("SSIDs count: %d" % len(ssids))
+# print ("Nullable SSIDs count: %d" % nullableSSID)
+# print ("PNL count: %d" % PNLCounter)
 
 # Adamic-Adar
 # from academicAdar import criaGrafo, runTeste
