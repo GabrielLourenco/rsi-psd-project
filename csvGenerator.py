@@ -7,7 +7,6 @@ def graph1and2(devices):
             data[vendor]['qtde'] = 1
         else:
             data[vendor]['qtde']+= 1
-        print(info['pnl'])
         if len(info['pnl']) > 0:
             if 'pnlExposed' not in data[vendor]:
                 data[vendor]['pnlExposed'] = 1

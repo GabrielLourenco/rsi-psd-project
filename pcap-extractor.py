@@ -12,6 +12,7 @@ directPR = 0
 broadcastPR = 0
 nullableSSID = 0
 macVendorsDict = getMacVendors()
+timeline = []
 
 pcapListFileNames = [
     'probes-2013-02-17.pcap1',
@@ -33,7 +34,8 @@ def verifyPCAP(pcap):
     for pkt in pcap:
         PRCounter += 1
         if pkt.haslayer(Dot11):
-            print(pkt.addr4)
+           
+            timeline.append(pkt.time)
             mac = pkt.addr2
             if mac not in devices:
                 devices[mac] = {}
@@ -78,7 +80,6 @@ def visualizeData(maxSize):
     global devices
     c = 0
     for mac, info in devices.items():
-        print(mac, info)
         if c < maxSize:
             print ("MAC: %s\nPNL: %s\nVendor: %s\n\n") % (mac, info['pnl'], info['vendor'])
         else:
@@ -88,7 +89,9 @@ def visualizeData(maxSize):
 
 # SINGLE SCRIPT #
 # to test, comment MASS SCRIPT
-verifyPCAP(rdpcap(pcapListFileNames[0]))
+print('b')
+rdpcap(pcapListFileNames[0])
+print('a')
 
 # MASS SCRIPT #
 # to test, comment SINGLE SCRIPT

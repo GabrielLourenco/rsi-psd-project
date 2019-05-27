@@ -21,7 +21,7 @@ Repositório do projeto da disciplina de RSI + PSD
 * [x] Gerar arquivo .csv respectivo à Figure 03 b do artigo
 * [x] Implementar algoritmo Adamic-Adar
 * [x] Gerar Table 3
-* [ ] Obter timestamp do scapy
+* [x] Obter timestamp do scapy
 * [ ] Gerar Table 4
 * [ ] Gerar arquivo .csv respectivo à Figure 05 a do artigo
 * [ ] Gerar arquivo .csv respectivo à Figure 06 a do artigo
