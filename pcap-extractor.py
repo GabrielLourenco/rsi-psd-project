@@ -36,7 +36,6 @@ def verifyPCAP(pcap):
         PRCounter += 1
         if pkt.haslayer(Dot11):
             timestamp = pkt.time
-            if current - timestamp :
             mac = pkt.addr2
             try:
                 ssid = pkt.info.decode("utf-8")
@@ -49,7 +48,7 @@ def verifyPCAP(pcap):
             vendor = macVendorsDict[macVendorAddress]
 
             sendToSpark(vendor, timestamp, ssid)
-            time.sleep()
+            time.sleep(10)
             # if mac not in devices:
             #     devices[mac] = {}
 

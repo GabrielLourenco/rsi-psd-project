@@ -5,4 +5,5 @@ producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=la
 
 def sendToSpark(mac, timestamp, ssid):
     global producer
-    producer.send('probes', '%s|%s|%f|%f' %(mac, ssid, timestamp, timestamp/10))
+    print('sending %s#%s#%f' %(mac, ssid, timestamp))
+    producer.send('probes', '%s#%s#%f' %(mac, ssid, timestamp))

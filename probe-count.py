@@ -1,5 +1,5 @@
 """    
-    bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3 /home/rsi-psd-vm/Documents/rsi-psd-project/probe-count.py localhost:9092 subscribe probes
+    ../spark-2.4.3-bin-hadoop2.7/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3 /home/rsi-psd-vm/Documents/rsi-psd-project/probe-count.py localhost:9092 subscribe probes
 """
 from __future__ import print_function
 
@@ -26,8 +26,7 @@ if __name__ == "__main__":
         .appName("ProbeCapture")\
         .getOrCreate()
 
-    # Create DataSet representing the stream of input lines from kafka
-    lines = spark\
+    kafka = spark\
         .readStream\
         .format("kafka")\
         .option("kafka.bootstrap.servers", bootstrapServers)\
@@ -35,20 +34,17 @@ if __name__ == "__main__":
         .load()\
         .selectExpr("CAST(value AS STRING)")
 
-    # Split the lines into words
-    words = lines.select(
-        split(lines.value, '|')[0].alias('vendor'),
-        split(lines.value, '|')[1].alias('ssid'),
-        split(lines.value, '|')[2].alias('ts')
-    )
+    spl = split(kafka['value'], '#')
 
-    # Generate running word count
-    wordCounts = words.groupBy('vendor').count().orderBy(desc('count'))
+    df = kafka\
+        .withColumn('vendor', spl.getItem(0))\
+        .withColumn('ssid', spl.getItem(1))\
+        .withColumn('ts', spl.getItem(2))\
+        .drop('value')
 
-    # Start running the query that prints the running counts to the console
-    query = wordCounts\
+    query = df\
         .writeStream\
-        .outputMode('complete')\
+        .option('truncate', 'false')\
         .format('console')\
         .start()
 
