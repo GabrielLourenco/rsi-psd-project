@@ -36,15 +36,29 @@ if __name__ == "__main__":
 
     spl = split(kafka['value'], '#')
 
-    df = kafka\
+    dfAll = kafka\
         .withColumn('vendor', spl.getItem(0))\
         .withColumn('ssid', spl.getItem(1))\
         .withColumn('ts', spl.getItem(2))\
         .drop('value')
+    
+    dfNotBroadcast = dfAll.filter(dfAll.ssid != 'BROADCAST')
+    
+    dfAll = dfAll.groupBy('vendor')\
+        .agg({'vendor': 'count'})
 
-    query = df\
+    dfNotBroadcast = dfNotBroadcast.groupBy('vendor')\
+        .agg({'vendor': 'count'})  
+
+
+    # df.createOrReplaceTempView('table')
+
+    # df = spark.sql('select tb.vendor, count(*) qtde, (select count(*) from table tb where tb.ssid <> "BROADCAST") qtdePnl from table tb group by tb.vendor')
+
+    query = dfAll\
         .writeStream\
         .option('truncate', 'false')\
+        .outputMode('complete')\
         .format('console')\
         .start()
 

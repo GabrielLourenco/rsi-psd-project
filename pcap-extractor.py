@@ -48,7 +48,7 @@ def verifyPCAP(pcap):
             vendor = macVendorsDict[macVendorAddress]
 
             sendToSpark(vendor, timestamp, ssid)
-            time.sleep(10)
+            time.sleep(3)
             # if mac not in devices:
             #     devices[mac] = {}
 
