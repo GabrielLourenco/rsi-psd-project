@@ -45,19 +45,19 @@ def verifyPCAP(pcap):
                 ssid = 'NULL'
 
             macVendorAddress = mac.replace(':', '')[:6].upper()
-            vendor = macVendorsDict[macVendorAddress]
+            
+            if (macVendorsDict.get(macVendorAddress)):
+                vendor = macVendorsDict[macVendorAddress]
+            else:
+                vendor = 'N/E'
 
-            sendToSpark(vendor, timestamp, ssid)
-            time.sleep(3)
+
+            sendToSpark(mac, vendor, timestamp, ssid)
+            # time.sleep(3)
             # if mac not in devices:
             #     devices[mac] = {}
 
             # macVendorAddress = mac.replace(':', '')[:6].upper()
-
-            # if (macVendorsDict.get(macVendorAddress)):
-            #     devices[mac]['vendor'] = macVendorsDict[macVendorAddress]
-            # else:
-            #     devices[mac]['vendor'] = 'N/E'
 
             # if 'pnl' not in devices[mac]:
             #     devices[mac]['pnl'] = []

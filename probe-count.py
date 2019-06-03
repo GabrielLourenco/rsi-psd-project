@@ -9,6 +9,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import explode
 from pyspark.sql.functions import split
 from pyspark.sql.functions import desc
+from pyspark.sql.functions import approxCountDistinct
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
@@ -37,25 +38,33 @@ if __name__ == "__main__":
     spl = split(kafka['value'], '#')
 
     dfAll = kafka\
-        .withColumn('vendor', spl.getItem(0))\
-        .withColumn('ssid', spl.getItem(1))\
-        .withColumn('ts', spl.getItem(2))\
+        .withColumn('mac', spl.getItem(0))\
+        .withColumn('vendor', spl.getItem(1))\
+        .withColumn('ssid', spl.getItem(2))\
+        .withColumn('ts', spl.getItem(3))\
         .drop('value')
     
     dfNotBroadcast = dfAll.filter(dfAll.ssid != 'BROADCAST')
-    
+
+    dfPNL = dfNotBroadcast.groupBy('mac')\
+        .agg(approxCountDistinct('ssid'))
+
+    dfSSIDs = dfNotBroadcast.groupBy('ssid')\
+        .agg(approxCountDistinct('mac').alias('ct'))\
+        .orderBy(desc('ct'))
+
     dfAll = dfAll.groupBy('vendor')\
         .agg({'vendor': 'count'})
 
     dfNotBroadcast = dfNotBroadcast.groupBy('vendor')\
-        .agg({'vendor': 'count'})  
+        .agg({'vendor': 'count'})
 
 
     # df.createOrReplaceTempView('table')
 
     # df = spark.sql('select tb.vendor, count(*) qtde, (select count(*) from table tb where tb.ssid <> "BROADCAST") qtdePnl from table tb group by tb.vendor')
 
-    query = dfAll\
+    query = dfPNL\
         .writeStream\
         .option('truncate', 'false')\
         .outputMode('complete')\
