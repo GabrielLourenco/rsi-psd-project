@@ -10,6 +10,7 @@ from pyspark.sql.functions import explode
 from pyspark.sql.functions import split
 from pyspark.sql.functions import desc
 from pyspark.sql.functions import approxCountDistinct
+from tb_integration import processRow
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
@@ -46,6 +47,8 @@ if __name__ == "__main__":
     
     dfNotBroadcast = dfAll.filter(dfAll.ssid != 'BROADCAST')
 
+    dfSSIDCount = dfNotBroadcast.groupBy('ssid').count().orderBy(desc('count'))
+
     dfPNL = dfNotBroadcast.groupBy('mac')\
         .agg(approxCountDistinct('ssid'))
 
@@ -64,8 +67,9 @@ if __name__ == "__main__":
 
     # df = spark.sql('select tb.vendor, count(*) qtde, (select count(*) from table tb where tb.ssid <> "BROADCAST") qtdePnl from table tb group by tb.vendor')
 
-    query = dfPNL\
+    query = dfSSIDCount\
         .writeStream\
+        .foreach(processRow)\
         .option('truncate', 'false')\
         .outputMode('complete')\
         .format('console')\
