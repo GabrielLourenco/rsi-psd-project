@@ -53,31 +53,6 @@ def verifyPCAP(pcap):
 
 
             sendToSpark(mac, vendor, timestamp, ssid)
-            # time.sleep(3)
-            # if mac not in devices:
-            #     devices[mac] = {}
-
-            # macVendorAddress = mac.replace(':', '')[:6].upper()
-
-            # if 'pnl' not in devices[mac]:
-            #     devices[mac]['pnl'] = []
-
-            # try:
-            #     ssid = pkt.info.decode("utf-8")
-            # except:
-            #     ssid = ''
-            #     nullableSSID += 1
-
-            # if ssid == '':
-            #     broadcastPR += 1
-            # else:
-            #     directPR += 1
-
-            #     if ssid not in ssids:
-            #         ssids.append(ssid)
-
-            #     if ssid not in devices[mac]['pnl']:
-            #         devices[mac]['pnl'].append(ssid)
 
 
 def countPNLs():

@@ -1,5 +1,5 @@
 """    
-    ../spark-2.4.3-bin-hadoop2.7/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3 /home/rsi-psd-vm/Documents/rsi-psd-project/probe-count.py localhost:9092 subscribe probes
+    ../spark-2.4.3-bin-hadoop2.7/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3 /home/rsi-psd-vm/Documents/rsi-psd-project/sparkProcessor.py localhost:9092 subscribe probes
 """
 from __future__ import print_function
 
@@ -10,7 +10,7 @@ from pyspark.sql.functions import explode
 from pyspark.sql.functions import split
 from pyspark.sql.functions import desc
 from pyspark.sql.functions import approxCountDistinct
-from tb_integration import processRow
+from tb-integration import processRow
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
@@ -47,7 +47,11 @@ if __name__ == "__main__":
     
     dfNotBroadcast = dfAll.filter(dfAll.ssid != 'BROADCAST')
 
-    dfSSIDCount = dfNotBroadcast.groupBy('ssid').count().orderBy(desc('count'))
+    # dfSSIDCount = dfNotBroadcast.groupBy('ssid').count()#.orderBy(desc('count'))
+    dfSSIDCount = dfNotBroadcast.agg(approxCountDistinct('ssid').alias('count'))\
+                    .agg(approxCountDistinct('count').alias('ct'))
+
+    # dfDispSSID = dfSSIDCount.agg(approxCountDistinct('count').alias('ct'))
 
     dfPNL = dfNotBroadcast.groupBy('mac')\
         .agg(approxCountDistinct('ssid'))
@@ -67,9 +71,9 @@ if __name__ == "__main__":
 
     # df = spark.sql('select tb.vendor, count(*) qtde, (select count(*) from table tb where tb.ssid <> "BROADCAST") qtdePnl from table tb group by tb.vendor')
 
+    # .foreach(processRow)\
     query = dfSSIDCount\
         .writeStream\
-        .foreach(processRow)\
         .option('truncate', 'false')\
         .outputMode('complete')\
         .format('console')\
