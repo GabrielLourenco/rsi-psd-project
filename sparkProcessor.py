@@ -10,7 +10,7 @@ from pyspark.sql.functions import explode
 from pyspark.sql.functions import split
 from pyspark.sql.functions import desc
 from pyspark.sql.functions import approxCountDistinct
-from tb-integration import processRow
+from tbIntegration import processRow
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     # dfSSIDCount = dfNotBroadcast.groupBy('ssid').count()#.orderBy(desc('count'))
     dfSSIDCount = dfNotBroadcast.agg(approxCountDistinct('ssid').alias('count'))\
-                    .agg(approxCountDistinct('count').alias('ct'))
+                    # .agg(approxCountDistinct('count').alias('ct'))
 
     # dfDispSSID = dfSSIDCount.agg(approxCountDistinct('count').alias('ct'))
 
@@ -67,16 +67,11 @@ if __name__ == "__main__":
         .agg({'vendor': 'count'})
 
 
-    # df.createOrReplaceTempView('table')
 
-    # df = spark.sql('select tb.vendor, count(*) qtde, (select count(*) from table tb where tb.ssid <> "BROADCAST") qtdePnl from table tb group by tb.vendor')
-
-    # .foreach(processRow)\
-    query = dfSSIDCount\
+    query = dfSSIDs\
         .writeStream\
-        .option('truncate', 'false')\
         .outputMode('complete')\
-        .format('console')\
+        .foreach(processRow)\
         .start()
 
     query.awaitTermination()

@@ -3,6 +3,7 @@ from macVendorsExtractor import getMacVendors
 from csvGenerator import graph1and2, graph3
 from kafkaProducer import sendToSpark
 import time
+from tbIntegration import turnLedOn
 
 seconds = time.time()
 devices = {}
@@ -13,6 +14,8 @@ directPR = 0
 broadcastPR = 0
 nullableSSID = 0
 macVendorsDict = getMacVendors()
+pcapCount = 0
+accelerateFactor = 10
 
 pcapListFileNames = [
     'probes-2013-02-17.pcap1',
@@ -27,15 +30,28 @@ pcapListFileNames = [
     'probes-2013-05-03.pcap2',
     'probes-2013-05-03.pcap3',
 ]
+turnLedOn(pcapCount)
 print('reading pcap')
 
 def verifyPCAP(pcap):
-    global devices, PRCounter, directPR, broadcastPR, ssids, nullableSSID, macVendorsDict
-    print('starting transmission')
+    global devices, PRCounter, directPR, broadcastPR, ssids, nullableSSID, macVendorsDict, pcapCount, accelerateFactor
+    pcapCount += 1
+    turnLedOn(pcapCount)
+    demanda = None
+
     for pkt in pcap:
         PRCounter += 1
         if pkt.haslayer(Dot11):
             timestamp = pkt.time
+            if demanda is None:
+                demanda = time.time() - timestamp
+                timestampIni = timestamp
+
+            currentTime = time.time() - demanda
+
+            while timestamp > timestampIni + (currentTime - timestampIni) * accelerateFactor:
+                currentTime = time.time() - demanda
+
             mac = pkt.addr2
             try:
                 ssid = pkt.info.decode("utf-8")
@@ -108,4 +124,4 @@ verifyPCAP(rdpcap(pcapListFileNames[0]))
 # grafo = criaGrafo(devices)
 # runTeste(grafo)
 
-# print ("Approximate Runtime: %f minutes") % ((time.time() - seconds) // 60)
+print ("Approximate Runtime: %f s" % (time.time() - seconds))

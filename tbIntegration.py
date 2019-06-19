@@ -10,5 +10,11 @@ headers = {}
 headers['Content-Type'] = 'application/json'
 
 def processRow(row):
-    row_data = { row.__getitem__("ssid") : row.__getitem__("count")}
+    row_data = { row.__getitem__("ssid") : row.__getitem__("ct")}
     requests.post(url, json=row_data)
+
+def turnLedOn(pcap):
+    global THINGSBOARD_HOST, THINGSBOARD_PORT, headers
+    AT = 'XwlQnO4xcqJvqR3cQuHa'
+    url = 'http://' + THINGSBOARD_HOST + ':' + THINGSBOARD_PORT + '/api/v1/' + AT + '/telemetry'
+    requests.post(url, json={'led': pcap})
