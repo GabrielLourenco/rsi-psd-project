@@ -99,9 +99,9 @@ verifyPCAP(rdpcap(pcapListFileNames[0]))
 
 countPNLs()
 
-graph1and2(devices)
+# graph1and2(devices)
 
-graph3(devices)
+# graph3(devices)
 
 #visualizeData(2000)
 
@@ -114,8 +114,30 @@ print "Nullable SSIDs count: %d" % nullableSSID
 print "PNL count: %d" % PNLCounter
 
 # Adamic-Adar
-# from academicAdar import criaGrafo, runTeste
-# grafo = criaGrafo(devices)
-# runTeste(grafo)
+from adamicAdar import criaGrafo, geraSimilaridade, plotG
+grafo = criaGrafo(devices)
+geraSimilaridade(grafo)
+plotG(grafo)
 
 print "Approximate Runtime: %d minutes" % ((time.time() - seconds) // 60)
+
+"""
+Resultado para o probes-2013-02-17.pcap1:
+Probe requests: 18597
+Direct probe requests: 9849
+Broadcast probe requests: 8748
+Device count: 1749
+SSIDs count: 2184
+Nullable SSIDs count: 0
+PNL count: 576
+
+#Resultado para todos os probes
+Probe requests: 376117
+Direct probe requests: 198589
+Broadcast probe requests: 177528
+Device count: 14641
+SSIDs count: 19126
+Nullable SSIDs count: 5
+PNL count: 5388
+Approximate Runtime: 9 minutes
+"""
