@@ -53,8 +53,8 @@ if __name__ == "__main__":
     query = df\
         .writeStream\
         .outputMode('complete')\
-        .format('console')\
+        .foreach(ssidNumber)\
         .start()
-        # .foreach(ssidNumber)\
+        # .format('console')\
 
     query.awaitTermination()

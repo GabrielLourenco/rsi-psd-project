@@ -15,23 +15,23 @@ def turnLedOn(pcap):
 
 def devicesNumber(row):
     row_data = { 'devices' : row.__getitem__("count")}
-    post('TOKEN', row_data)
+    post('9AcKuG2Y6gSOvWmBacut', row_data)
 
 def pnlNumber(row):
     row_data = { 'pnl' : row.__getitem__("count")}
-    post('TOKEN', row_data)
+    post('pRwrZlfbFvqeNJncFsKx', row_data)
 
 def totalProbesNumber(row):
     row_data = { 'probes' : row.__getitem__("count")}
-    post('TOKEN', row_data)
+    post('Jp0eNJDS2sKFPAjBNIs3', row_data)
 
 def drProbesNumber(row):
     row_data = { 'drprobes' : row.__getitem__("count")}
-    post('TOKEN', row_data)
+    post('5YExropi5V5tRJKxN7Mh', row_data)
 
 def brProbesNumber(row):
     row_data = { 'brprobes' : row.__getitem__("count")}
-    post('TOKEN', row_data)
+    post('bTDyzkfou38KaibIGTK7', row_data)
 
 def ssidNumber(row):
     row_data = { 'ssids' : row.__getitem__("count")}
