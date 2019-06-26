@@ -20,11 +20,11 @@ Repositório do projeto da disciplina de RSI + PSD
 * [x] Gerar arquivo .csv respectivo à Figure 03 a do artigo
 * [x] Gerar arquivo .csv respectivo à Figure 03 b do artigo
 * [x] Implementar algoritmo Adamic-Adar
-* [x] Gerar Table 3
 * [x] Obter timestamp do scapy
-* [ ] Gerar Table 4
-* [ ] Gerar arquivo .csv respectivo à Figure 05 a do artigo
-* [ ] Gerar arquivo .csv respectivo à Figure 06 a do artigo
+* [-] Gerar Table 3
+* [-] Gerar Table 4
+* [-] Gerar arquivo .csv respectivo à Figure 05 a do artigo
+* [-] Gerar arquivo .csv respectivo à Figure 06 a do artigo
 
 ## Comandos úteis
 * Instalar spark: `pip3 install pyspark`
@@ -33,3 +33,4 @@ Repositório do projeto da disciplina de RSI + PSD
 * Corrigir a versão do java: `sudo cp jdk.sh /etc/profile.d/ > sudo init 6`
 * Rodar o ThingsBoard: `docker run -it -p 9090:9090 -p 1883:1883 -p 5683:5683/udp -v ~/.mytb-data:/data -v ~/.mytb-logs:/var/log/thingsboard --name mytb --restart always thingsboard/tb-cassandra` [doc](https://thingsboard.io/docs/user-guide/install/docker/)
 * Apontar o spark para o python3 `export PYSPARK_PYTHON=python3`
+* Liberar porta do KAFKA para a rede local: `sudo ufw allow <PORTA>/tcp`

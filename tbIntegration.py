@@ -35,23 +35,23 @@ def brProbesNumber(row):
 
 def ssidNumber(row):
     row_data = { 'ssids' : row.__getitem__("count")}
-    post('TOKEN', row_data)
+    post('Gx0UeL5qeJx8D13rgCXD', row_data)
 
 def processGraph1(row):
     row_data = { row.__getitem__("vendor") : row.__getitem__("macsDistinct")}
-    post('TOKEN', row_data)
+    post('y4jKDIkvpNs9sMuAmNsI', row_data)
 
 def processGraph2(row):
     row_data = { row.__getitem__("vendor") : row.__getitem__("macsDistinct")}
-    post('TOKEN', row_data)
+    post('POp7uagT4HV8hegBEiqu', row_data)
 
 def processTable1(row):
     row_data = { row.__getitem__("ssid") : row.__getitem__("ssidsDistinct")}
-    post('TOKEN', row_data)
+    post('UC6agSx0dX8GCf9zAaVp', row_data)
 
 def processTable2(row):
     row_data = { row.__getitem__("mac") : row.__getitem__("ssidsDistinct")}
-    post('TOKEN', row_data)
+    post('KXYWAmDZKzyvqqKtuuRi', row_data)
     
 
 def post(AT, data):
