@@ -27,8 +27,9 @@ Repositório do projeto da disciplina de RSI + PSD
 * [ ] Gerar arquivo .csv respectivo à Figure 06 a do artigo
 
 ## Comandos úteis
+* Instalar spark: `pip3 install pyspark`
 * Rodar Spark: `rsi-psd-project$ ../spark-2.4.3-bin-hadoop2.7/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.3 /home/rsi-psd-vm/Documents/rsi-psd-project/probe-count.py localhost:9092 subscribe probes`
 * Rodar o Docker-Composer: `docker-composer up`
-* Corrigir a versão do java: `sudo cp jdk.sh > sudo cp jdk.sh /etc/profile.d/ > sudo init 6`
+* Corrigir a versão do java: `sudo cp jdk.sh /etc/profile.d/ > sudo init 6`
 * Rodar o ThingsBoard: `docker run -it -p 9090:9090 -p 1883:1883 -p 5683:5683/udp -v ~/.mytb-data:/data -v ~/.mytb-logs:/var/log/thingsboard --name mytb --restart always thingsboard/tb-cassandra` [doc](https://thingsboard.io/docs/user-guide/install/docker/)
-* Apontar o spark para o python2 `export PYSPARK_PYTHON=python`
+* Apontar o spark para o python3 `export PYSPARK_PYTHON=python3`

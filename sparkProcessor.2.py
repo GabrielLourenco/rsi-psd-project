@@ -8,9 +8,9 @@ import sys
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import explode
 from pyspark.sql.functions import split
-from pyspark.sql.functions import desc
+# from pyspark.sql.functions import desc
 from pyspark.sql.functions import approxCountDistinct
-from tbIntegration import processRow
+from tbIntegration import processGraph2
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
@@ -45,36 +45,16 @@ if __name__ == "__main__":
         .withColumn('ts', spl.getItem(3))\
         .drop('value')
     
-    # dfNotBroadcast = dfAll.filter(dfAll.ssid != 'BROADCAST')
-
-    # dfSSIDCount = dfNotBroadcast.groupBy('ssid').count()#.orderBy(desc('count'))
-    # dfSSIDCount = dfNotBroadcast.agg(approxCountDistinct('ssid').alias('count'))\
-                    # .agg(approxCountDistinct('count').alias('ct'))
-
-    # dfDispSSID = dfSSIDCount.agg(approxCountDistinct('count').alias('ct'))
-
-    # dfPNL = dfNotBroadcast.groupBy('mac')\
-    #     .agg(approxCountDistinct('ssid'))
-
-    # dfSSIDs = dfNotBroadcast.groupBy('ssid')\
-    #     .agg(approxCountDistinct('mac').alias('ct'))\
-    #     .orderBy(desc('ct'))
-
-# Grafico 1
-    dfAll = dfAll.groupBy('vendor')\
-        .agg(approxCountDistinct('mac').alias('macsDistinct')).orderBy(desc('macsDistinct'))
+    dfNotBroadcast = dfAll.filter(dfAll.ssid != 'BROADCAST')\
+        .groupBy('vendor')\
+        .agg(approxCountDistinct('mac').alias('macsDistinct'))
 
 
-    # dfNotBroadcast = dfNotBroadcast.groupBy('vendor')\
-    #     .agg({'vendor': 'count'})
-
-
-
-    query = dfAll\
+    query = dfNotBroadcast\
         .writeStream\
         .outputMode('complete')\
-        .format('console')\
+        .foreach(processGraph2)\
         .start()
-        # .foreach(processRow)\
+        # .format('console')\
 
     query.awaitTermination()

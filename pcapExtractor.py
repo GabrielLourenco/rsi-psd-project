@@ -1,4 +1,5 @@
 from scapy.all import *
+from scapy.layers.dot11 import Dot11
 from macVendorsExtractor import getMacVendors
 from csvGenerator import graph1and2, graph3
 from kafkaProducer import sendToSpark
@@ -15,7 +16,7 @@ broadcastPR = 0
 nullableSSID = 0
 macVendorsDict = getMacVendors()
 pcapCount = 0
-accelerateFactor = 10
+accelerateFactor = 100
 
 pcapListFileNames = [
     'probes-2013-02-17.pcap1',
@@ -30,8 +31,7 @@ pcapListFileNames = [
     'probes-2013-05-03.pcap2',
     'probes-2013-05-03.pcap3',
 ]
-turnLedOn(pcapCount)
-print('reading pcap')
+
 
 def verifyPCAP(pcap):
     global devices, PRCounter, directPR, broadcastPR, ssids, nullableSSID, macVendorsDict, pcapCount, accelerateFactor
@@ -78,20 +78,9 @@ def countPNLs():
             PNLCounter += 1
 
 
-def visualizeData(maxSize):
-    # não funcional
-    global devices
-    c = 0
-    for mac, info in devices.items():
-        if c < maxSize:
-            print ("MAC: %s\nPNL: %s\nVendor: %s\n\n") % (mac, info['pnl'], info['vendor'])
-        else:
-            break
-        c += 1
-
-
 # SINGLE SCRIPT #
 # to test, comment MASS SCRIPT
+print('reading pcap')
 verifyPCAP(rdpcap(pcapListFileNames[0]))
 
 # MASS SCRIPT #

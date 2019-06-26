@@ -4,17 +4,58 @@ import requests
 
 THINGSBOARD_HOST = '172.16.206.232'
 THINGSBOARD_PORT = '9090'
-ACCESS_TOKEN = 'ONQGJIopoQeSabtQ3itA'
-url = 'http://' + THINGSBOARD_HOST + ':' + THINGSBOARD_PORT + '/api/v1/' + ACCESS_TOKEN + '/telemetry'
 headers = {}
 headers['Content-Type'] = 'application/json'
-
-def processRow(row):
-    row_data = { row.__getitem__("ssid") : row.__getitem__("ct")}
-    requests.post(url, json=row_data)
 
 def turnLedOn(pcap):
     global THINGSBOARD_HOST, THINGSBOARD_PORT, headers
     AT = 'XwlQnO4xcqJvqR3cQuHa'
     url = 'http://' + THINGSBOARD_HOST + ':' + THINGSBOARD_PORT + '/api/v1/' + AT + '/telemetry'
     requests.post(url, json={'led': pcap})
+
+def devicesNumber(row):
+    row_data = { 'devices' : row.__getitem__("count")}
+    post('TOKEN', row_data)
+
+def pnlNumber(row):
+    row_data = { 'pnl' : row.__getitem__("count")}
+    post('TOKEN', row_data)
+
+def totalProbesNumber(row):
+    row_data = { 'probes' : row.__getitem__("count")}
+    post('TOKEN', row_data)
+
+def drProbesNumber(row):
+    row_data = { 'drprobes' : row.__getitem__("count")}
+    post('TOKEN', row_data)
+
+def brProbesNumber(row):
+    row_data = { 'brprobes' : row.__getitem__("count")}
+    post('TOKEN', row_data)
+
+def ssidNumber(row):
+    row_data = { 'ssids' : row.__getitem__("count")}
+    post('TOKEN', row_data)
+
+def processGraph1(row):
+    row_data = { row.__getitem__("vendor") : row.__getitem__("macsDistinct")}
+    post('TOKEN', row_data)
+
+def processGraph2(row):
+    row_data = { row.__getitem__("vendor") : row.__getitem__("macsDistinct")}
+    post('TOKEN', row_data)
+
+def processTable1(row):
+    row_data = { row.__getitem__("ssid") : row.__getitem__("ssidsDistinct")}
+    post('TOKEN', row_data)
+
+def processTable2(row):
+    row_data = { row.__getitem__("mac") : row.__getitem__("ssidsDistinct")}
+    post('TOKEN', row_data)
+    
+
+def post(AT, data):
+    global THINGSBOARD_HOST, THINGSBOARD_PORT, headers
+    url = 'http://' + THINGSBOARD_HOST + ':' + THINGSBOARD_PORT + '/api/v1/' + AT + '/telemetry'
+    requests.post(url, json=data)
+
